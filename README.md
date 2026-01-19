@@ -48,6 +48,7 @@
 
 ### 2. 설치 및 실행
 
+```bash
 # 프로젝트 복제 (또는 폴더 이동)
 cd [프로젝트-폴더-이름]
 
@@ -55,11 +56,12 @@ cd [프로젝트-폴더-이름]
 terraform init
 
 # 2. 실행 계획 확인 (변경 사항 검토)
-# db_password는 변수로 입력받거나 terraform.tfvars 파일에 정의하세요.
+- db_password는 변수로 입력받거나 terraform.tfvars 파일에 정의하세요.
 terraform plan -var="db_password=your_secure_password"
 
 # 3. 인프라 구축 실행
 terraform apply -var="db_password=your_secure_password" -auto-approve
+```
 
 ---
 
