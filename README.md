@@ -68,34 +68,6 @@ terraform apply -var="db_password=your_secure_password" -auto-approve
 ## 🏗 시스템 아키텍처
 
 
+<img width="1400" height="1000" alt="KakaoTalk_20260117_162259963" src="https://github.com/user-attachments/assets/10d9c230-7207-429d-b5be-b124831d0b52" />
 
-```mermaid
-graph TD
-    subgraph AWS_Cloud ["AWS Cloud (ap-northeast-2)"]
-        subgraph VPC ["VPC (10.0.0.0/16)"]
-            IGW["Internet Gateway"]
-            
-            subgraph Subnet_A ["Public Subnet A (ap-northeast-2a)"]
-                EC2["EC2 Instance (App Server)"]
-                RDS_A["RDS Instance (Primary)"]
-            end
-            
-            subgraph Subnet_C ["Public Subnet C (ap-northeast-2c)"]
-                RDS_C["RDS Subnet"]
-            end
-            
-            RT["Public Route Table"]
-        end
-
-        ECR["Amazon ECR (jjh-backend)"]
-        CW["CloudWatch Dashboard"]
-        SSM["AWS Systems Manager"]
-    end
-
-    User -->|SSH/HTTP| IGW
-    IGW --> EC2
-    EC2 --> RDS_A
-    EC2 --> ECR
-    EC2 -.->|Metrics| CW
-    SSM -.->|Manage| EC2
 
