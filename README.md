@@ -71,6 +71,6 @@ terraform apply -var="db_password=your_secure_password" -auto-approve
 
 
 
-<img width="1400" height="1000" alt="KakaoTalk_20260117_162259963" src="https://github.com/user-attachments/assets/10d9c230-7207-429d-b5be-b124831d0b52" />
+<img width="1400" height="1000" alt="AWS Architecture Diagram (jjh-)" src="https://github.com/user-attachments/assets/10d9c230-7207-429d-b5be-b124831d0b52" />
 
 
