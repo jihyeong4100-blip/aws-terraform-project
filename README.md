@@ -1,5 +1,7 @@
 # 🚀 AWS Automated Infrastructure with Terraform
 
+![AWS Architecture Diagram](./aws_architecture_diagram.png)
+
 이 프로젝트는 **Terraform**을 사용하여 AWS 클라우드에 확장 가능하고 모니터링 가능한 인프라를 자동으로 구축하는 코드(IaC)입니다. 
 개발자가 애플리케이션 개발에만 집중할 수 있도록 VPC, EC2(Docker 환경), RDS, ECR, 그리고 실시간 대시보드까지 한 번에 구성합니다.
 
@@ -71,6 +73,38 @@ terraform apply -var="db_password=your_secure_password" -auto-approve
 
 
 
-<img width="1400" height="1000" alt="AWS Architecture Diagram (jjh-)" src="https://github.com/user-attachments/assets/10d9c230-7207-429d-b5be-b124831d0b52" />
+---
+
+## 🛑 트러블슈팅 (Troubleshooting)
+
+프로젝트를 진행하며 발생할 수 있는 일반적인 문제와 해결 방법을 공유합니다.
+
+### 1. Terraform 권한 문제 (Permission Denied)
+*   **Issue:** `terraform plan` 또는 `terraform apply` 실행 시 "Access Denied" 또는 "UnauthorizedOperation" 에러 발생.
+*   **Cause:** AWS CLI를 통해 설정된 사용자 또는 역할에 Terraform이 생성하려는 리소스에 대한 권한이 없습니다.
+*   **Solution:** AWS IAM 콘솔에서 현재 사용하고 있는 IAM User 또는 Role에 필요한 권한(예: `AdministratorAccess` 또는 필요한 서비스별 권한)을 부여합니다. 최소 권한의 원칙에 따라 필요한 권한만 부여하는 것이 좋습니다.
+
+### 2. SSH 접속 문제 (SSH Connection Timed Out)
+*   **Issue:** EC2 인스턴스에 SSH 접속 시 "Connection timed out" 에러 발생.
+*   **Cause:**
+    *   EC2 인스턴스의 보안 그룹 인바운드 규칙에 SSH(22번 포트) 허용이 안 되어 있습니다.
+    *   로컬 환경의 IP 주소가 보안 그룹에 등록되어 있지 않습니다.
+    *   `jjh-key.pem` 키 페어 파일의 권한이 너무 개방적입니다.
+*   **Solution:**
+    *   EC2 인스턴스에 연결된 보안 그룹의 인바운드 규칙에 22번 포트(SSH)가 허용되어 있는지 확인합니다.
+    *   보안 그룹 규칙에 로컬 환경의 Public IP가 등록되어 있는지 확인합니다. (또는 테스트 목적으로 `0.0.0.0/0`으로 임시 설정)
+    *   키 페어 파일(`jjh-key.pem`)의 권한을 `chmod 400 jjh-key.pem`으로 변경합니다.
+
+---
+
+## 📤 출력 값 (Outputs)
+
+`terraform apply` 완료 후 다음 정보들을 확인할 수 있습니다:
+
+*   `public_ip`: 배포된 EC2 인스턴스의 Public IP 주소.
+*   `ssh_command`: EC2 인스턴스에 접속하기 위한 SSH 명령어 예시.
+*   `instance_id`: EC2 인스턴스의 ID.
+*   `ecr_repository_url`: ECR 레포지토리 URL.
+*   `rds_endpoint`: RDS MySQL 데이터베이스의 엔드포인트.
 
 
