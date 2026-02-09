@@ -29,6 +29,78 @@
 
 ---
 
+
+
+## 📁 Terraform 모듈 구조 (Module Structure)
+
+
+
+이 프로젝트는 Terraform의 모듈 기능을 적극 활용하여 인프라를 논리적인 단위로 분리하고 관리합니다. 이를 통해 코드의 재사용성을 높이고, 각 컴포넌트의 독립적인 관리가 가능하며, 대규모 인프라에서도 코드의 가독성과 유지보수성을 확보합니다.
+
+
+
+주요 모듈은 다음과 같이 구성됩니다:
+
+
+
+-   **`modules/vpc`**:
+
+    -   AWS VPC(Virtual Private Cloud) 및 관련 네트워크 리소스(서브넷, 인터넷 게이트웨이, 라우팅 테이블)를 정의합니다.
+
+    -   네트워크 격리 및 트래픽 라우팅을 담당하는 핵심 모듈입니다.
+
+
+
+-   **`modules/security_groups`**:
+
+    -   EC2 인스턴스 및 RDS 데이터베이스를 위한 보안 그룹을 정의합니다.
+
+    -   인바운드/아웃바운드 트래픽 규칙을 중앙에서 관리하여 네트워크 보안을 강화합니다.
+
+
+
+-   **`modules/ec2_instance`**:
+
+    -   애플리케이션 서버로 사용될 EC2 인스턴스를 프로비저닝합니다.
+
+    -   IAM 역할, 인스턴스 프로파일, SSH 키 페어, User Data 스크립트(Docker, SSM, CloudWatch Agent 설치) 등을 포함합니다.
+
+    -   Elastic IP(EIP) 할당을 통해 고정 IP 주소를 제공합니다.
+
+
+
+-   **`modules/rds`**:
+
+    -   MySQL RDS(Relational Database Service) 인스턴스를 프로비저닝하고 관리합니다.
+
+    -   DB 서브넷 그룹, IAM 역할(강화된 모니터링용) 등을 설정하여 데이터베이스의 가용성과 성능 모니터링을 지원합니다.
+
+
+
+-   **`modules/ecr`**:
+
+    -   Docker 이미지를 저장하고 관리하기 위한 ECR(Elastic Container Registry) 레포지토리를 생성합니다.
+
+    -   이미지 스캔 설정 및 접근 정책을 정의합니다.
+
+
+
+-   **`modules/cloudwatch_dashboard`**:
+
+    -   EC2 및 RDS 인스턴스의 주요 메트릭을 시각화하는 CloudWatch Dashboard를 설정합니다.
+
+    -   CPU 사용률, 메모리 사용률, 데이터베이스 연결 수 등을 한눈에 모니터링할 수 있도록 구성합니다.
+
+
+
+각 모듈은 자체적인 `main.tf`, `variables.tf`, `outputs.tf` 파일을 가짐으로써 독립성을 유지하며, 루트(`main.tf`)에서는 이 모듈들을 조합하여 전체 인프라를 구성합니다. 루트의 `variables.tf`는 전체 프로젝트의 공통 변수를, `outputs.tf`는 외부에서 참조할 최종 출력 값을 정의합니다.
+
+
+
+---
+
+
+
 ## 🛠 기술 스택 (Tech Stack)
 
 | 구분 | 기술 | 상세 내용 |
